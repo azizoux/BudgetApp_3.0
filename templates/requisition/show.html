@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<aside class="col-md-3">
+				<!--   SIDEBAR   -->
+				<ul class="list-group">
+					<a class="list-group-item active text-center" href="{% url 'home' module %}">
+						{% if module == "1" %}
+							GESTION ADMIN.
+						{% elif module == "2" %}
+							GESTION TECH
+						{% elif module == "3" %}
+							GESTION A.S.S.
+						{% elif module == "4" %}
+							GESTION IMMO.
+						{% elif module == "5" %}
+							GESTION PLAC.
+						{% else %}
+							ERROR
+						{% endif %}
+					</a>
+					{% for compte in comptes %}
+					<a class="list-group-item text-right"  href="{% url 'line' compte.account.id %}">
+						{{compte.account.label}} <b>{{compte.account.code}}</b><small class="text-danger">({{compte.stats}}%)</small></b>
+					</a>
+					{% endfor %}
+
+				</ul>
+				<br>
+				{% if not user.is_staff and not user.is_admin %}
+					<a class="btn btn-outline-primary btn-block" href="{% url 'create_requisition' module %}"> 
+						<i class="fa fa-power-off"></i> <span class="text">Réquisition</span> 
+					</a>
+				{% else %}
+					<a class="btn btn-outline-primary btn-block" href="{% url 'home' module %}"> 
+						<i class="fa fa-power-off"></i> <span class="text">Réquisition</span> 
+					</a>
+				{% endif %}
+				<!--   SIDEBAR .//END   -->
+			</aside>
+			<main class="col-md-9">
+				<article class="card">
+				  <!-- card-body .// -->
+					<header class="card-header">
+						<span> </span> <strong class="d-inline-block mr-3">TOTAL ENG.: <span class="text-danger">{{total_engagement|floatformat:0|intcomma}}</span> vs TOTAL C.O: <span class="text-primary">{{total_open_credit|floatformat:0|intcomma}}</span></strong>
+						<span>{% now "SHORT_DATETIME_FORMAT" %}</span> </span> - (<strong class="text-danger">{{total_stats}}%</strong>)
+					</header>
+					<div class="table-responsive">
+						<article class="card-body">
+							<header class="mb-4">
+								<h4 class="card-title">
+									Réquisition N° {{requisition.eng_number}} - {{requisition.label}} -
+									{% if requisition.status == 'validated' %}
+										<strong class="text-success">{{requisition.status|upper}}</strong>
+									{% elif requisition.status == 'submitted'  %}
+										<strong class="text-primary">{{requisition.status|upper}}</strong>
+									{% elif requisition.status == 'returned'  %}
+										<strong class="text-danger">{{requisition.status|upper}}</strong>
+									{% else %}
+										<strong class="text-warning">{{requisition.status|upper}}</strong>
+									{% endif %}
+								</h4>
+							</header>
+								<div class="form-row">
+									<div class="col form-group col-md-6">
+										<label>Ligne budgetaire</label>
+										<input type="text" value="{{requisition.account.label}} - {{requisition.account.code}}" class="form-control" name="amount" readonly>
+									</div> <!-- form-group end.// -->
+									<div class="col form-group col-md-6">
+										<label>Montant BX</label>
+										<label class="form-control"><strong>{{requisition.amount|floatformat:0|intcomma}}</strong></label>
+									</div> <!-- form-group end.// -->
+								</div> <!-- form-row end.// -->
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label>Crédit ouvert</label>
+										<label class="form-control"><strong>{{requisition.open_credit|floatformat:0|intcomma}}</strong></label>
+									</div>
+									<div class="form-group col-md-6">
+										<label>Engagement anterieur</label>
+										<label class="form-control"><strong>{{requisition.anterior_engagement|floatformat:0|intcomma}}</strong></label>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label>Total des engagements</label>
+										<label class="form-control"><strong>{{requisition.total_engagement|floatformat:0|intcomma}}</strong></label>
+									</div>
+									<div class="form-group col-md-6">
+										<label>Crédit disponible</label>
+										<label class="form-control"><strong>{{requisition.available_amount|floatformat:0|intcomma}}</strong></label>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label>N° de la Facture</label>
+										<input type="text" class="form-control" value="{{requisition.purchase_order}}" readonly>
+									</div> <!-- form-group end.// -->
+									<div class="form-group col-md-6">
+										<label>Fournisseur</label>
+										<input type="text" class="form-control" value="{{requisition.supplier_name}}" readonly>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-6 ">
+										{% if not user.is_staff  and not user.is_admin and requisition.status != 'validated' and requisition.status != 'submitted' %}
+											<label>Action à faire</label>
+											<div class="row">
+												<div class="col">
+													<a href="{% url 'edit_requisition' requisition.id %}" class="btn btn-warning btn-block">Modifier</a>
+												</div>
+												<div class="col">
+													<div class="input-group-prepend">
+														<a onclick="confirm('Voulez-vous supprimer la requisition?')" href="{% url 'delete_requisition' requisition.id %}" class="btn btn-danger btn-block">Supprimer</a>
+													</div>
+												</div>
+											</div>
+										{% endif %}
+										{% if user.is_staff and requisition.status == 'open' %}
+											<label>Action à faire</label>
+											<div class="row">
+												<div class="col">
+													<a href="{% url 'return_cfo' requisition.id %}" class="btn btn-warning btn-block">Retourner</a>
+												</div>
+												<div class="col">
+													<a href="{%  url 'send_requisition' requisition.id %}" class="btn btn-primary btn-block">Soumettre</a>
+												</div>
+											</div>
+										{% endif %}
+										{% if user.is_admin and requisition.status == 'submitted'%}
+											<div class="row">
+												<div class="col">
+													<a href="{%  url 'validate_requisition' requisition.id %}" class="btn btn-primary btn-block">Valider</a>
+												</div>
+												<div class="col">
+													<a href="{% url 'return_gm' requisition.id %}" class="btn btn-warning btn-block">Retourner</a>
+												</div>
+											</div>
+										{% endif %}
+									</div> <!-- form-group end.// -->
+								<div>
+
+								<small class="text-danger">{{ form.errors }}</small>
+						</article><!-- card-body.// -->
+					</div>
+				</article><!-- card-body.// -->
+			</main>
+		</div> <!-- row.// -->
+	</div>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container">
+	<div class="row">
+	<aside class="col-md-3">
+		<!--   SIDEBAR   -->
+		<ul class="list-group">
+			<a class="list-group-item active text-center" href="{% url 'home' module %}">
+				{% if module == 1 %}
+					GESTION ADMIN.
+				{% elif module == 2 %}
+					GESTION TECH
+				{% elif module == 3 %}
+					GESTION A.S.S.
+				{% elif module == 4 %}
+					GESTION IMMO.
+				{% elif module == 5 %}
+					GESTION PLAC.
+				{% endif %}
+			</a>
+			{% for compte in comptes %}
+			<a class="list-group-item text-right"  href="{% url 'line' compte.account.id %}">{{compte.account.label}} <b>{{compte.account.code}}</b><small class="text-danger">({{compte.stats}}%)</small></b></a>
+			{% endfor %}
+
+		</ul>
+		<br>
+		{% if not user.is_staff and not user.is_admin %}
+			<a class="btn btn-outline-primary btn-block" href="{% url 'create_requisition' module %}"> 
+				<i class="fa fa-power-off"></i> <span class="text">Réquisition</span> 
+			</a>
+		{% else %}
+		<a class="btn btn-outline-primary btn-block" href="{% url 'home' module %}"> 
+			<i class="fa fa-power-off"></i> <span class="text">Réquisition</span> 
+		</a>
+		{% endif %}
+		<!--   SIDEBAR .//END   -->
+	</aside>
+		<main class="col-md-9">
+			<article class="card-body">
+				<header class="card-header">
+						<h5 class="card-title"><span class="text-primary">{{compte.code}}</span> - {{compte.label}}</h5>
+					 <strong class="d-inline-block mr-3">TOTAL ENG.: <span class="text-danger">{{total_engagement|floatformat:0|intcomma}}</span> vs TOTAL C.O: <span class="text-primary">{{total_open_credit|floatformat:0|intcomma}}</span></strong>
+			<span>{% now "SHORT_DATETIME_FORMAT" %}</span> - (<strong class="text-danger">{{total_stats}}%</strong>)
+		</header>
+				<div class="form-row">
+					<div class="col form-group col-md-6">
+						<label>Crédit ouvert</label><br/>
+						<label class="form-control"><strong>{{compte.prevision|floatformat:0|intcomma}}</strong></label>
+					</div> <!-- form-group end.// -->
+					<div class="col form-group col-md-6">
+						<label>Total des engagements</label>
+					  	<label class="form-control"><strong>{{compte.executed|floatformat:0|intcomma}}</strong></label>
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<header class="mb-4"><h5 class="card-title text-success">Les sous-comptes associés à  - {{compte.code}}</h5></header>
+			{% for line in lines %}
+				<div class="form-row">
+					<div class="col form-group col-md-4">
+						<label><strong class="text-danger">{{line.code}}</strong></label>(<strong class="text-primary">{{line.stat}}%</strong>)
+						<input type="text" value="{{line.label}} " class="form-control" readonly>
+					</div> <!-- form-group end.// -->
+					<div class="col form-group col-md-4">
+						<label>Crédit ouvert</label>
+					  	<label class="form-control"><strong>{{line.prevision|floatformat:0|intcomma}}</strong></label>
+					</div> <!-- form-group end.// -->
+					<div class="col form-group col-md-4">
+						<label>Total des engagenements</label>
+					  	<label class="form-control"><strong>{{line.executed|floatformat:0|intcomma}}</strong></label>
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+			{% endfor %}
+
+				<small class="text-danger">{{ form.errors }}</small>
+		</article><!-- card-body.// -->
+		</main>
+	</div> <!-- row.// -->
+</div>
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

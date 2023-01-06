@@ -1,0 +1,45 @@
+.header-main {
+  background-color: #0e52a0 !important;
+  color: white;
+}
+.navbar-light {
+  background-color: #f47920 !important;
+  color: white;
+}
+.footer-bottom {
+  background-color: #0e52a0 !important;
+  color: white;
+}
+.btn-cnps{
+    color: white;
+}
+.nav-link{
+    color: white !important;
+}
+.nav-link:hover{
+    color: #0e52a0 !important;
+}
+.nav-link.active{
+    color: #0e52a0 !important;
+    font-weight: 700;
+}
+.cnps-link{
+    color: white !important;
+}
+.cnps-link:hover{
+    color: #f47920 !important;
+}
+.list-group-item.active{
+    background-color: #0e52a0 !important;
+    color: white;
+    font-weight: 700;
+}
+.list-group-item.active:hover{
+    color: white;
+}
+.list-group-item{
+    color: #0e52a0;
+}
+.list-group-item:hover{
+    color: #f47920;
+}

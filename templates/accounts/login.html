@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y" style="min-height:84vh">
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+	<div class="card mx-auto" style="max-width: 380px; margin-top:30px;">
+      <div class="card-body">
+      <h4 class="card-title mb-2">Se Connecter</h4>
+      <form method="POST", action="{%url 'login' %}">
+          {% csrf_token %}
+          <div class="form-group">
+			 <input type="email" class="form-control" placeholder="Email Address" name="email">
+          </div> <!-- form-group// -->
+          <div class="form-group">
+			<input type="password" class="form-control" placeholder="Password" name="password">
+          </div> <!-- form-group// -->
+
+          <div class="form-group">
+          	<a href="{% url 'forgot_password' %}" class="float-right">Mot de passe oublié?</a>
+
+          </div> <!-- form-group form-check .// -->
+          <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+          </div> <!-- form-group// -->
+      </form>
+      </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}
