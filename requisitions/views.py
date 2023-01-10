@@ -39,7 +39,7 @@ def create(request, module):
         eng_number = len(Requisition.objects.all()) + 1
         requisition = Requisition.objects.create(
             eng_number = eng_number,
-            type="Requisition",
+            type=compte.label,
             purchase_order=purchase_order,
             label=label,
             supplier_name=supplier_name,

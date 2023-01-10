@@ -20,7 +20,7 @@
 				{% endif %}
 			</a>
 			{% for compte in comptes %}
-			<a class="list-group-item text-right"  href="#">{{compte.account.label}} <b>{{compte.account.code}}</b><small class="text-danger">({{compte.stats}}%)</small></b></a>
+			<a class="list-group-item text-right"  href="{% url 'line' compte.account.id %}">{{compte.account.label}} <b>{{compte.account.code}}</b><small class="text-danger">({{compte.stats}}%)</small></b></a>
 			{% endfor %}
 		</ul>
 		<br>
@@ -92,8 +92,5 @@
 	</main>
 </div> <!-- row.// -->
 </div>
-
-
-</section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock %}

@@ -112,9 +112,11 @@
 													<a href="{% url 'edit_requisition' requisition.id %}" class="btn btn-warning btn-block">Modifier</a>
 												</div>
 												<div class="col">
-													<div class="input-group-prepend">
-														<a onclick="confirm('Voulez-vous supprimer la requisition?')" href="{% url 'delete_requisition' requisition.id %}" class="btn btn-danger btn-block">Supprimer</a>
-													</div>
+													<form action="{%  url 'get_pdf' %}" method="POST">
+														{% csrf_token %}
+														<input type="hidden" value="{{requisition.id}}" name="id">
+														<button type="submit" class="btn btn-secondary btn-block">Voir PDF</button>
+													</form>
 												</div>
 											</div>
 										{% endif %}
@@ -136,6 +138,20 @@
 												</div>
 												<div class="col">
 													<a href="{% url 'return_gm' requisition.id %}" class="btn btn-warning btn-block">Retourner</a>
+												</div>
+											</div>
+										{% endif %}
+										{% if requisition.status == 'validated'%}
+											<div class="row">
+												<div class="col">
+													<form action="{%  url 'get_pdf' %}" method="POST">
+														{% csrf_token %}
+														<input type="hidden" value="{{requisition.id}}" name="id">
+														<button type="submit" class="btn btn-primary btn-block">Voir PDF</button>
+													</form>
+												</div>
+												<div class="col">
+													<a href="#" class="btn btn-warning btn-block">Telecharger</a>
 												</div>
 											</div>
 										{% endif %}

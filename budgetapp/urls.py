@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('line/<int:id>/', views.line, name='line'),
     path('search/', views.search, name='search'),
+    path('pdf/', include('budget.urls')),
     path('gestion/', include('gestionadmin.urls')),
     path('requisitions/', include('requisitions.urls')),
     path('admin/', admin.site.urls),
