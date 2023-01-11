@@ -60,6 +60,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'budgetapp.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -156,5 +157,5 @@ MESSAGE_TAGS = {
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_POR = 587
 EMAIL_HOST_USER = 'shop.toumai@gmail.com'
-EMAIL_HOST_PASSWORD = 'Fedora2022'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True

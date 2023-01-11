@@ -166,8 +166,6 @@ def delete(request, id):
 @login_required(login_url='login')
 def show(request, id):
     requisition = get_object_or_404(Requisition, id=id)
-    print("in show", requisition.module)
-    print("*"*20)
     lignes = Ligne.objects.all()
     compteInfo = getAllAccounts(requisition.module)
     context = {
