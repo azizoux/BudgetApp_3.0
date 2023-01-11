@@ -23,7 +23,7 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             messages.success(request, 'Vous etes bien connecté.')
-            return redirect('home', module=1)
+            return redirect('home', module=7)
         else:
             messages.error(request, 'login est invalid')
             return redirect('login')

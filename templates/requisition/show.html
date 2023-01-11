@@ -7,18 +7,16 @@
 				<!--   SIDEBAR   -->
 				<ul class="list-group">
 					<a class="list-group-item active text-center" href="{% url 'home' module %}">
-						{% if module == "1" %}
+						{% if module == 7 %}
 							GESTION ADMIN.
-						{% elif module == "2" %}
+						{% elif module == 5 %}
 							GESTION TECH
-						{% elif module == "3" %}
+						{% elif module == 3 %}
 							GESTION A.S.S.
-						{% elif module == "4" %}
+						{% elif module == 2 %}
 							GESTION IMMO.
-						{% elif module == "5" %}
+						{% elif module == 1 %}
 							GESTION PLAC.
-						{% else %}
-							ERROR
 						{% endif %}
 					</a>
 					{% for compte in comptes %}
@@ -109,8 +107,31 @@
 											<label>Action à faire</label>
 											<div class="row">
 												<div class="col">
-													<a href="{% url 'edit_requisition' requisition.id %}" class="btn btn-warning btn-block">Modifier</a>
+													<a href="{% url 'edit_requisition' requisition.id %}" class="btn btn-danger btn-block">Modifier</a>
 												</div>
+												<div class="col">
+													<form action="{%  url 'get_pdf' %}" method="POST">
+														{% csrf_token %}
+														<input type="hidden" value="{{requisition.id}}" name="id">
+														<button type="submit" class="btn btn-secondary btn-block">Voir PDF</button>
+													</form>
+												</div>
+												<div class="col">
+													<a href="#" class="btn btn-warning btn-block">Telecharger</a>
+												</div>
+											</div>
+										{% endif %}
+										{% if user.is_staff %}
+											<label>Action à faire</label>
+											<div class="row">
+												{% if requisition.status == 'open' %}
+												<div class="col">
+													<a href="{% url 'return_cfo' requisition.id %}" class="btn btn-warning btn-block">Retourner</a>
+												</div>
+												<div class="col">
+													<a href="{%  url 'send_requisition' requisition.id %}" class="btn btn-primary btn-block">Soumettre</a>
+												</div>
+												{% endif %}
 												<div class="col">
 													<form action="{%  url 'get_pdf' %}" method="POST">
 														{% csrf_token %}
@@ -120,41 +141,26 @@
 												</div>
 											</div>
 										{% endif %}
-										{% if user.is_staff and requisition.status == 'open' %}
-											<label>Action à faire</label>
+										{% if user.is_admin %}
 											<div class="row">
-												<div class="col">
-													<a href="{% url 'return_cfo' requisition.id %}" class="btn btn-warning btn-block">Retourner</a>
-												</div>
-												<div class="col">
-													<a href="{%  url 'send_requisition' requisition.id %}" class="btn btn-primary btn-block">Soumettre</a>
-												</div>
-											</div>
-										{% endif %}
-										{% if user.is_admin and requisition.status == 'submitted'%}
-											<div class="row">
+												{% if requisition.status == 'submitted' %}
 												<div class="col">
 													<a href="{%  url 'validate_requisition' requisition.id %}" class="btn btn-primary btn-block">Valider</a>
 												</div>
 												<div class="col">
 													<a href="{% url 'return_gm' requisition.id %}" class="btn btn-warning btn-block">Retourner</a>
 												</div>
-											</div>
-										{% endif %}
-										{% if requisition.status == 'validated'%}
-											<div class="row">
+												{% endif %}
 												<div class="col">
 													<form action="{%  url 'get_pdf' %}" method="POST">
 														{% csrf_token %}
 														<input type="hidden" value="{{requisition.id}}" name="id">
-														<button type="submit" class="btn btn-primary btn-block">Voir PDF</button>
+														<button type="submit" class="btn btn-secondary btn-block">Voir PDF</button>
 													</form>
-												</div>
-												<div class="col">
-													<a href="#" class="btn btn-warning btn-block">Telecharger</a>
 												</div>
 											</div>
 										{% endif %}
+										
 									</div> <!-- form-group end.// -->
 								<div>
 
