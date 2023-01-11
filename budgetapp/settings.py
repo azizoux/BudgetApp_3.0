@@ -156,6 +156,6 @@ MESSAGE_TAGS = {
 #SMTP Configuration
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_POR = 587
-EMAIL_HOST_USER = 'shop.toumai@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'requisition.cnps@gmail.com'
+EMAIL_HOST_PASSWORD = 'Cnps@2023#'
 EMAIL_USE_TLS = True
