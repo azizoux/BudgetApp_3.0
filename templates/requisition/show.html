@@ -141,6 +141,22 @@
 												</div>
 											</div>
 										{% endif %}
+										{% if not user.is_staff  and not user.is_admin and requisition.status == 'validated' %}
+											<label>Action à faire</label>
+											<div class="row">
+												<div class="col">
+												</div>
+												<div class="col">
+												</div>
+												<div class="col">
+													<form action="{%  url 'get_pdf' %}" method="POST">
+														{% csrf_token %}
+														<input type="hidden" value="{{requisition.id}}" name="id">
+														<button type="submit" class="btn btn-secondary btn-block">Voir PDF</button>
+													</form>
+												</div>
+											</div>
+										{% endif %}
 										{% if user.is_admin %}
 											<div class="row">
 												{% if requisition.status == 'submitted' %}

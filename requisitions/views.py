@@ -97,7 +97,10 @@ def edit(request, id):
         if ligne.id != requisition.account.id:
             print("*********code different************")
             old_ligne = Ligne.objects.get(pk=requisition.account.id)
+            print(old_ligne.code)
             old_compte = Compte.objects.get(pk=old_ligne.compte.id)
+            print(old_compte.code)
+
             old_ligne.executed = old_ligne.executed - requisition.amount
             old_compte.executed = old_compte.executed - requisition.amount
             old_compte.save()
@@ -107,7 +110,11 @@ def edit(request, id):
             print("********* meme compte ************")
             ligne.executed = ligne.executed - requisition.amount
             compte.executed = compte.executed - requisition.amount
-
+            compte.save()
+            ligne.save()
+            
+        ligne = Ligne.objects.get(code=account)
+        compte = Compte.objects.get(pk=ligne.compte.id)
         requisition.anterior_engagement = ligne.executed
         requisition.total_engagement = ligne.executed + amount
         requisition.total_expense = ligne.executed + amount
