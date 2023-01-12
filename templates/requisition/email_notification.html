@@ -1,0 +1,13 @@
+{% autoescape off %}
+{% load humanize %}
+
+Bonjour Mr.
+
+Merci de cliquer sur le lien ci-dessous pour acceder à la requisition N°{{requisition.id}} 
+et finaliser l'autorisation de depense du montant de {{requisition.amount|intcomma}} XAF relatif à 
+{{requisition.label}}.
+http://{{domain}}{% url 'show_requisition' requisition.id  %}
+
+Si vous pensez que ce n'est pas vous, merci d'ignorer cet email.
+
+{% endautoescape %}

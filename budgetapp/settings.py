@@ -157,5 +157,5 @@ MESSAGE_TAGS = {
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_POR = 587
 EMAIL_HOST_USER = 'requisition.cnps@gmail.com'
-EMAIL_HOST_PASSWORD = 'Cnps@2023#'
+EMAIL_HOST_PASSWORD = 'ujaflfpxuuzidbnl'
 EMAIL_USE_TLS = True

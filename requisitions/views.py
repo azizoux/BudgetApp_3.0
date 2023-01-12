@@ -1,6 +1,9 @@
 from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 from budgetapp.views import getAllAccounts
 from budget.models import Ligne, Compte
 from requisitions.models import Requisition
@@ -185,6 +188,21 @@ def send(request, id):
     requisition = Requisition.objects.get(pk=id)
     requisition.status = "submitted"
     requisition.save()
+
+    # USER NOTIFICATION
+    user = request.user
+    current_site = get_current_site(request)
+    mail_subject = f"Notification de depense N°{requisition.id}"
+    message = render_to_string('requisition/email_notification.html',{
+        'user': user,
+        'domain': current_site,
+        'requisition': requisition,
+    })
+    print(message)
+    print("*"*40)
+    to_email = "azizmahamat@gmail.com"
+    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.send()
     messages.success(request, "La requisition a été bien soumis pour la validation")
     return redirect('show_requisition', id=id)
 
