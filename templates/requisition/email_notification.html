@@ -1,9 +1,9 @@
 {% autoescape off %}
 {% load humanize %}
 
-Bonjour Mr.
+Bonjour DG,
 
-La requisition N°{{requisition.id}} realative a l'autorisation de depense d'un montant
+La requisition N°{{requisition.id}} relative a l'autorisation de depense d'un montant
 de {{requisition.amount|intcomma}} XAF pour {{requisition.label}} est arrivée à votre niveau.
 Merci de cliquer sur le lien ci-dessous
 http://{{domain}}{% url 'show_requisition' requisition.id  %}

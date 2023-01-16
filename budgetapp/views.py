@@ -17,6 +17,9 @@ def getAllAccounts(id):
             "account": cpte,
             "stats": round((cpte.executed / cpte.prevision) * 100, 2)
         })
+   
+    if total_open_credit == 0:
+        total_open_credit = 1
     data = {
         'comptes': new_obj,
         'total_open_credit': total_open_credit,
@@ -79,7 +82,7 @@ def line(request, id):
 @login_required(login_url='login')
 def search(request):
     requisitions = Requisition.objects.order_by('-created_at')
-    compteInfo = getAllAccounts(1)
+    compteInfo = getAllAccounts(7)
     if 'keyword' in request.GET and request.GET['keyword']:
         keyword = request.GET['keyword']
         if keyword.isdigit() and requisitions.filter(eng_number=keyword).exists():
